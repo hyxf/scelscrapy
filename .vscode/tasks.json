@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "scrapy - runspider",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/scrapy runspider ${file} -o ${workspaceFolder}/dist/imei-${fileBasenameNoExtension}.json",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "detail": "Scrapy runspider ...",
+      "dependsOn": ["scrapy - removeJson", "scrapy - createDist"]
+    },
+    {
+      "label": "scrapy - removeJson",
+      "type": "shell",
+      "command": "find ${workspaceFolder}/dist -name '*.json' -exec rm -f {} +",
+      "problemMatcher": [],
+      "detail": "Remove Json only if JSON files exist..."
+    },
+    {
+      "label": "scrapy - createDist",
+      "type": "shell",
+      "command": "[ -d \"${workspaceFolder}/dist\" ] || mkdir -p \"${workspaceFolder}/dist\"",
+      "problemMatcher": [],
+      "detail": "Create dist only if dist not exist."
+    },
+    {
+      "label": "scrapy - genspider",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/scrapy genspider ${input:spiderName} https://www.xxxx.com/",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "Scrapy genspider..."
+    }
+  ],
+  "inputs": [
+    {
+      "id": "spiderName",
+      "type": "promptString",
+      "description": "Enter Spider Name:",
+      "default": "Spider"
+    }
+  ]
+}
